@@ -61,16 +61,38 @@ public class Main {
             }
         }
     }
-    
+
 
     // ======== 10 REQUIRED METHODS (Students fill these) ========
 
     public static String mostProfitableCommodityInMonth(int month) {
-        return "DUMMY"; 
+        if (month < 0 || month >= MONTHS) return "INVALID_MONTH";
+
+        int bestSum = Integer.MIN_VALUE;
+        int bestIndex = -1;
+
+        for (int c = 0; c < COMMS; c++) {
+            int sum = 0;
+            for (int d = 0; d < DAYS; d++) {
+                sum += profits[month][d][c];
+            }
+            if (sum > bestSum) {
+                bestSum = sum;
+                bestIndex = c;
+            }
+        }
+        return commodities[bestIndex] + " " + bestSum;
     }
 
     public static int totalProfitOnDay(int month, int day) {
-        return 1234;
+        if (month < 0 || month >= MONTHS || day < 1 || day > DAYS)
+            return -99999;
+
+        int sum = 0;
+        for (int c = 0; c < COMMS; c++) {
+            sum += profits[month][day - 1][c];
+        }
+        return sum;
     }
 
     public static int commodityProfitInRange(String commodity, int from, int to) {
