@@ -96,11 +96,43 @@ public class Main {
     }
 
     public static int commodityProfitInRange(String commodity, int from, int to) {
-        return 1234;
+        if (from < 1 || to > DAYS || from > to) return -99999;
+
+        int cIndex = -1;
+        for (int c = 0; c < COMMS; c++) {
+            if (commodities[c].equals(commodity)) {
+                cIndex = c;
+                break;
+            }
+        }
+        if (cIndex == -1) return -99999;
+
+        int sum = 0;
+        for (int m = 0; m < MONTHS; m++) {
+            for (int d = from - 1; d <= to - 1; d++) {
+                sum += profits[m][d][cIndex];
+            }
+        }
+        return sum;
     }
 
-    public static int bestDayOfMonth(int month) { 
-        return 1234; 
+    public static int bestDayOfMonth(int month) {
+        if (month < 0 || month >= MONTHS) return -1;
+
+        int bestDay = 1;
+        int bestSum = Integer.MIN_VALUE;
+
+        for (int d = 0; d < DAYS; d++) {
+            int sum = 0;
+            for (int c = 0; c < COMMS; c++) {
+                sum += profits[month][d][c];
+            }
+            if (sum > bestSum) {
+                bestSum = sum;
+                bestDay = d + 1;
+            }
+        }
+        return bestDay;
     }
     
     public static String bestMonthForCommodity(String comm) { 
