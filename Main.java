@@ -187,12 +187,44 @@ public class Main {
         return maxStreak;
     }
     
-    public static int daysAboveThreshold(String comm, int threshold) { 
-        return 1234; 
+    public static int daysAboveThreshold(String comm, int threshold) {
+        int cIndex = -1;
+        for (int c = 0; c < COMMS; c++) {
+            if (commodities[c].equals(comm)) {
+                cIndex = c;
+                break;
+            }
+        }
+        if (cIndex == -1) return -1;
+
+        int count = 0;
+        for (int m = 0; m < MONTHS; m++) {
+            for (int d = 0; d < DAYS; d++) {
+                if (profits[m][d][cIndex] > threshold) count++;
+            }
+        }
+        return count;
     }
 
-    public static int biggestDailySwing(int month) { 
-        return 1234; 
+    public static int biggestDailySwing(int month) {
+        if (month < 0 || month >= MONTHS) return -99999;
+
+        int prev = 0;
+        for (int c = 0; c < COMMS; c++) {
+            prev += profits[month][0][c];
+        }
+
+        int maxSwing = 0;
+        for (int d = 1; d < DAYS; d++) {
+            int curr = 0;
+            for (int c = 0; c < COMMS; c++) {
+                curr += profits[month][d][c];
+            }
+            int diff = Math.abs(curr - prev);
+            if (diff > maxSwing) maxSwing = diff;
+            prev = curr;
+        }
+        return maxSwing;
     }
     
     public static String compareTwoCommodities(String c1, String c2) { 
